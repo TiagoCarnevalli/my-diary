@@ -1,0 +1,34 @@
+.Speach-component {
+    text-align: justify;
+    color: white;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #888;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    .Current-date {
+      color: #888;
+    }
+
+    p {
+      text-indent: 1.2rem;
+    }
+
+    .SpeachHeader {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .DeleteButton {
+            color: #555;
+            cursor: pointer;
+
+            &:hover {
+                color: #ccc;
+            }
+        }
+    }
+  }

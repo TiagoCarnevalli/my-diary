@@ -20,10 +20,14 @@
 
   .PopUp {
     background: #000a;
-    width: 104vw;
-    height: 104vh;
+    width: 100vw;
+    height: 102vh;
     position: absolute;
-    transform: translate(0, 45vh);
+    transform: translateY(45vh);
+
+    @media (max-width: 640px) {
+        transform: translate(-1rem, 45vh);
+    }
 
     .UnburdenBox {
         display: grid;
@@ -33,14 +37,15 @@
         box-shadow: 0 0 1rem #000;
         border-radius: 1rem;
         width: 42rem;
+        height: fit-content;
         position: relative;
         transform: translate(-50%, -50%);
-        top: 45%;
+        top: 50%;
         left: 50%;
 
         @media (max-width: 640px) {
             width: 22rem;
-            margin: 0.1rem;
+            margin: 0;
         }
 
         .CloseButton {

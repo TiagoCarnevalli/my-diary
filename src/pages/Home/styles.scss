@@ -9,7 +9,7 @@
       justify-content: space-around;
       background: #1d1d1d;
       padding: 1rem;
-      width: 100%;
+      width: -webkit-fill-available;
       position: fixed;
       box-shadow: 0 0.5rem 16px #0008;
   
@@ -18,7 +18,7 @@
       }
       
       @media (max-width: 640px) {
-        padding: 1rem 0;
+        justify-content: space-between;
 
         h2{
             font-size: 1rem;

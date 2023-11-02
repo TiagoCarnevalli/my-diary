@@ -9,11 +9,16 @@ export default function UnburdenBotton(props: Props) {
     const [opened, setOpened] = useState(false);
     const [text, setText] = useState("");
 
-    const addNew = (text: string) => {
+    function addNew(text: string) {
         props.unburden(text);
         setText("");
         setOpened(false);
     }
+
+    function cancel() {
+        setText("");
+        setOpened(false);
+    } 
 
     return (
         <>
@@ -32,7 +37,7 @@ export default function UnburdenBotton(props: Props) {
                         onChange={({ target }) => {setText(target.value)}}
                     />
                     <div className='UBFooter'>
-                        <button style={{ background: '#f33' }} onClick={() => {setOpened(false)}}>Cancelar</button>
+                        <button style={{ background: '#f33' }} onClick={() => { cancel() }}>Cancelar</button>
                         <button style={{ background: '#3c3' }} hidden={text === ""} onClick={() => {text !== "" && addNew(text)}}>Salvar</button>
                     </div>
                 </div>

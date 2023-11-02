@@ -24,13 +24,21 @@
         align-items: center;
         justify-content: space-between;
 
-        .DeleteButton {
-            color: #555;
-            cursor: pointer;
+        .Buttons {
+          display: inline-grid;
+          grid-template-columns: auto auto;
+          column-gap: 1.6rem;
+          color: #555;
+          cursor: pointer;
 
-            &:hover {
-                color: #ccc;
-            }
+          @media (max-width: 640px) {
+            grid-template-columns: auto;
+            column-gap: 3rem;
+          }
+
+          svg:hover {
+            color:#ccc;
+          }
         }
     }
   }

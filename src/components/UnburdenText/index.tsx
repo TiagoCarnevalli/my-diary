@@ -1,6 +1,9 @@
 import React from 'react';
 import './styles.scss';
-import { FiTrash } from 'react-icons/fi';
+import { 
+    FiTrash, 
+    // FiEdit 
+} from 'react-icons/fi';
 
 interface Props {
     index: number;
@@ -8,15 +11,17 @@ interface Props {
         date: string;
         paragraph: string;
     };
+    editFunc: (index: number) => void;
     deleteFunc: (index: number) => void;
 }
 
-export default function UnburdenComponent({index, item, deleteFunc}: Props) {
+export default function UnburdenComponent({index, item, editFunc, deleteFunc}: Props) {
     return (
         <div key={index} className="Speach-component">
             <div className='SpeachHeader'>
                 <strong className="Current-date">{item.date}</strong>
-                <div className='DeleteButton'>
+                <div className='Buttons'>
+                    {/* <FiEdit onClick={() => editFunc(index)} /> */}
                     <FiTrash onClick={() => deleteFunc(index)} />
                 </div>
             </div>

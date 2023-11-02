@@ -62,6 +62,13 @@ export default function Home() {
                     key={u.id} 
                     index={i} 
                     item={u} 
+                    editFunc={(index) => {
+                        let auxArray = [...unburden];
+
+                        auxArray.splice(index, 1, {...auxArray[index], date: new Date().toLocaleString(), paragraph: 'Editado'});
+
+                        setUnburden(auxArray);
+                    }}
                     deleteFunc={(index) => {
                         let auxArray = [...unburden];
                         

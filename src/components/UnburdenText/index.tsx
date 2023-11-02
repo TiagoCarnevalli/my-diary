@@ -20,7 +20,7 @@ export default function UnburdenComponent({index, item, deleteFunc}: Props) {
                     <FiTrash onClick={() => deleteFunc(index)} />
                 </div>
             </div>
-            <p>{item.paragraph}</p>
+            <pre>{item.paragraph}</pre>
         </div>
     );
 }

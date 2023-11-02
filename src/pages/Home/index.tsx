@@ -3,7 +3,7 @@ import './styles.scss';
 import UnburdenBotton from '../../components/UnburdenButton';
 import UnburdenComponent from '../../components/UnburdenText';
 
-import { collection, getDocs, query } from 'firebase/firestore';
+import { collection, getDocs, query, doc, deleteDoc, orderBy, setDoc } from 'firebase/firestore';
 import { dbFirestore } from '../../api/firebase';
 
 type Unburden = {
@@ -21,23 +21,40 @@ export default function Home() {
 
     async function getUnburdens() {
         let aux: Unburden[] = []
-        const querySnapshot = await getDocs(query(collection(dbFirestore, 'unburdens')));
+        const querySnapshot = await getDocs(query(collection(dbFirestore, 'unburdens'), orderBy('date')));
         querySnapshot.forEach((doc: any) => {
-            aux.push({id: doc.id, date: doc.data().date, paragraph: doc.data().paragraph });
-            console.log('Aux: ', aux);
-            console.log(doc.id, ' => ', doc.data());
+            aux.unshift({id: doc.id, date: doc.data().date, paragraph: doc.data().paragraph });
         });
 
         setUnburden(aux);
     };
 
+    async function addUnburden(text: string) {
+        let idAux: string = new Date().valueOf().toString();
+        await setDoc(doc(dbFirestore, 'unburdens', idAux), {
+            date: new Date().toLocaleString(),
+            paragraph: text
+        });
+
+        setUnburden([
+            {
+                id: idAux,
+                date: new Date().toLocaleString(), 
+                paragraph: text 
+            },
+            ...unburden
+        ]);
+    };
+
+    async function deleteUnburden(id: string) {
+        await deleteDoc(doc(dbFirestore, 'unburdens', id));
+    }
+
     return (
         <div className="App">
         <div className="App-header">
             <h2>Cantinho do Desabafo</h2>
-            <UnburdenBotton 
-            unburden={(newUnburden) => setUnburden([...unburden, {id: "Teste", date: new Date().toLocaleString(), paragraph: newUnburden }])}
-            />
+            <UnburdenBotton unburden={(newUnburden) => {addUnburden(newUnburden);}}/>
         </div>
         <div className="App-body">
             {unburden.map((u, i) => { return (
@@ -51,6 +68,7 @@ export default function Home() {
                     auxArray.splice(index, 1);
                     
                     setUnburden(auxArray);
+                    deleteUnburden(u.id);
                 }} 
             />
             )})}

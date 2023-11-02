@@ -13,8 +13,10 @@
       color: #888;
     }
 
-    p {
-      text-indent: 1.2rem;
+    pre {
+      padding: 1rem 0 0.2rem;
+      font: inherit;
+      text-wrap: wrap;
     }
 
     .SpeachHeader {

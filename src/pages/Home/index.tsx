@@ -52,27 +52,27 @@ export default function Home() {
 
     return (
         <div className="App">
-        <div className="App-header">
-            <h2>Cantinho do Desabafo</h2>
-            <UnburdenBotton unburden={(newUnburden) => {addUnburden(newUnburden);}}/>
-        </div>
-        <div className="App-body">
-            {unburden.map((u, i) => { return (
-            <UnburdenComponent 
-                key={u.id} 
-                index={i} 
-                item={u} 
-                deleteFunc={(index) => {
-                    let auxArray = [...unburden];
-                    
-                    auxArray.splice(index, 1);
-                    
-                    setUnburden(auxArray);
-                    deleteUnburden(u.id);
-                }} 
-            />
-            )})}
-        </div>
+            <div className="App-header">
+                <h2>Cantinho do Desabafo</h2>
+                <UnburdenBotton unburden={(newUnburden) => {addUnburden(newUnburden);}}/>
+            </div>
+            <div className="App-body">
+                {unburden.map((u, i) => { return (
+                <UnburdenComponent 
+                    key={u.id} 
+                    index={i} 
+                    item={u} 
+                    deleteFunc={(index) => {
+                        let auxArray = [...unburden];
+                        
+                        auxArray.splice(index, 1);
+                        
+                        setUnburden(auxArray);
+                        deleteUnburden(u.id);
+                    }} 
+                />
+                )})}
+            </div>
         </div>
     );
 }

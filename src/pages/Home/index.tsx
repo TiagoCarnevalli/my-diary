@@ -3,7 +3,7 @@ import './styles.scss';
 import UnburdenBotton from '../../components/UnburdenButton';
 import UnburdenComponent from '../../components/UnburdenText';
 
-import { collection, getDocs, query, doc, deleteDoc, orderBy, setDoc } from 'firebase/firestore';
+import { collection, getDocs, query, doc, deleteDoc, setDoc } from 'firebase/firestore';
 import { dbFirestore } from '../../api/firebase';
 
 type Unburden = {
@@ -21,7 +21,7 @@ export default function Home() {
 
     async function getUnburdens() {
         let aux: Unburden[] = []
-        const querySnapshot = await getDocs(query(collection(dbFirestore, 'unburdens'), orderBy('date')));
+        const querySnapshot = await getDocs(query(collection(dbFirestore, 'unburdens')));
         querySnapshot.forEach((doc: any) => {
             aux.unshift({id: doc.id, date: doc.data().date, paragraph: doc.data().paragraph });
         });
@@ -32,7 +32,7 @@ export default function Home() {
     async function addUnburden(text: string) {
         let idAux: string = new Date().valueOf().toString();
         await setDoc(doc(dbFirestore, 'unburdens', idAux), {
-            date: new Date().toLocaleString(),
+            date: new Date(),
             paragraph: text
         });
 

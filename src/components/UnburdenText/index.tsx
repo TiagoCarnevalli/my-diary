@@ -8,10 +8,11 @@ import {
 interface Props {
     index: number;
     item: {
-        date: string;
+        id: string
+        date: Date;
         paragraph: string;
     };
-    editFunc: (index: number) => void;
+    editFunc: (item: any, index: number) => void;
     deleteFunc: (index: number) => void;
 }
 
@@ -19,7 +20,7 @@ export default function UnburdenComponent({index, item, editFunc, deleteFunc}: P
     return (
         <div key={index} className="Speach-component">
             <div className='SpeachHeader'>
-                <strong className="Current-date">{item.date}</strong>
+                <strong className="Current-date">{new Date(Number(item.id)).toLocaleString()}</strong>
                 <div className='Buttons'>
                     {/* <FiEdit onClick={() => editFunc(index)} /> */}
                     <FiTrash onClick={() => deleteFunc(index)} />

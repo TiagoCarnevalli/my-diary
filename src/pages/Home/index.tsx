@@ -2,18 +2,25 @@ import React, { useEffect, useState } from 'react';
 import './styles.scss';
 import UnburdenBotton from '../../components/UnburdenButton';
 import UnburdenComponent from '../../components/UnburdenText';
+import { 
+    FiCode
+} from 'react-icons/fi';
 
-import { collection, getDocs, query, doc, deleteDoc, setDoc } from 'firebase/firestore';
+import { collection, getDocs, query, doc, deleteDoc, setDoc, updateDoc } from 'firebase/firestore';
 import { dbFirestore } from '../../api/firebase';
 
 type Unburden = {
     id: string,
-    date: string,
+    date: Date,
     paragraph: string
 }
 
 export default function Home() {
     const [unburden, setUnburden] = useState<Unburden[]>([]);
+    const [dateFilter, setDateFilter] = useState<{before: string, after: string}>({
+        before: new Date(new Date().setDate(new Date().getDate() - 365)).toISOString().split("T")[0],
+        after: new Date().toISOString().split("T")[0]
+    })
 
     useEffect(() => {
         getUnburdens();
@@ -27,6 +34,10 @@ export default function Home() {
         });
 
         setUnburden(aux);
+        setDateFilter({
+            ...dateFilter,
+            before: new Date(Number(aux[aux.length - 1].id)).toISOString().split("T")[0]
+        })
     };
 
     async function addUnburden(text: string) {
@@ -39,7 +50,7 @@ export default function Home() {
         setUnburden([
             {
                 id: idAux,
-                date: new Date().toLocaleString(), 
+                date: new Date(), 
                 paragraph: text 
             },
             ...unburden
@@ -50,6 +61,10 @@ export default function Home() {
         await deleteDoc(doc(dbFirestore, 'unburdens', id));
     }
 
+    // async function updateUnburden(id: string, item: any) {
+    //     await updateDoc(doc(dbFirestore, 'unburdens', id), item)
+    // }
+
     return (
         <div className="App">
             <div className="App-header">
@@ -57,17 +72,37 @@ export default function Home() {
                 <UnburdenBotton unburden={(newUnburden) => {addUnburden(newUnburden);}}/>
             </div>
             <div className="App-body">
-                {unburden.map((u, i) => { return (
+                <div className='date-filter'>
+                    <strong>Período:</strong>
+                    <input 
+                        type='date' 
+                        min={(unburden.length > 0 ? new Date(Number(unburden[unburden.length - 1].id)) : new Date()).toISOString().split("T")[0]}
+                        max={(unburden.length > 0 ? new Date(Number(unburden[0].id)) : new Date()).toISOString().split("T")[0]}
+                        defaultValue={dateFilter.before}
+                        onChange={(e) => setDateFilter({ ...dateFilter, before: e.currentTarget.value })}
+                    />
+                    <FiCode className='icon' />
+                    <input type='date'
+                        min={(unburden.length > 0 ? new Date(Number(unburden[unburden.length - 1].id)) : new Date()).toISOString().split("T")[0]}
+                        max={new Date().toISOString().split("T")[0]}
+                        defaultValue={dateFilter.after}
+                        onChange={(e) => setDateFilter({ ...dateFilter, after: e.currentTarget.value })}
+                    />
+                </div>
+                {unburden.filter(({ id }) => { 
+                    if(dateFilter) { return dateFilter?.before <= new Date(Number(id)).toISOString().split("T")[0] && 
+                    dateFilter?.after >= new Date(Number(id)).toISOString().split("T")[0]} else {return 0}}).map((u, i) => { return (
                 <UnburdenComponent 
                     key={u.id} 
                     index={i} 
                     item={u} 
-                    editFunc={(index) => {
+                    editFunc={(item, index) => {
                         let auxArray = [...unburden];
 
-                        auxArray.splice(index, 1, {...auxArray[index], date: new Date().toLocaleString(), paragraph: 'Editado'});
+                        auxArray.splice(index, 1, {...auxArray[index], date: new Date(), paragraph: 'Editado'});
 
                         setUnburden(auxArray);
+                        // updateUnburden(u.id, auxArray);
                     }}
                     deleteFunc={(index) => {
                         let auxArray = [...unburden];
